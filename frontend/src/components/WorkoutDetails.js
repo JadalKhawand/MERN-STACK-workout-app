@@ -1,30 +1,45 @@
-import { UseWorkoutsContext } from "../hooks/UseWorkoutsContext"
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-
+import { UseWorkoutsContext } from "../hooks/UseWorkoutsContext";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { useAuthContext } from "../hooks/useAuthContext";
 const WorkoutDetails = ({ workout }) => {
-  const { dispatch } = UseWorkoutsContext()
-
+  const { dispatch } = UseWorkoutsContext();
+  const {user} = useAuthContext()
   const handleClick = async () => {
-    const response = await fetch('/api/workouts/' + workout._id, {
-      method: 'DELETE'
-    })
-    const json = await response.json()
+    if (!user) {
+      return;
+    }
+
+    const response = await fetch("/api/workouts/" + workout._id, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
 
     if (response.ok) {
-      dispatch({type: 'DELETE_WORKOUT', payload: json})
+      dispatch({ type: "DELETE_WORKOUT", payload: json });
     }
-  }
+  };
 
   return (
     <div className="workout-details">
       <h4>{workout.title}</h4>
-      <p><strong>Load (kg): </strong>{workout.load}</p>
-      <p><strong>Number of reps: </strong>{workout.reps}</p>
+      <p>
+        <strong>Load (kg): </strong>
+        {workout.load}
+      </p>
+      <p>
+        <strong>Number of reps: </strong>
+        {workout.reps}
+      </p>
       {/* suffix is only to add the word ago. */}
-      <p>{formatDistanceToNow(new Date(workout.createdAt), {addSuffix: true})}</p> 
+      <p>
+        {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}
+      </p>
       <span onClick={handleClick}>delete</span>
     </div>
-  )
-}
+  );
+};
 
-export default WorkoutDetails
+export default WorkoutDetails;
