@@ -9,7 +9,7 @@ const createToken = (_id) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.signup(email, password);
+    const user = await User.login(email, password);
     // create token
     const token = createToken(user._id);
     res.status(200).json({ email, token });
