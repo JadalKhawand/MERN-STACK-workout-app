@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react/cjs/react.production.min";
+import { createContext, useReducer } from "react";
 
 export const AuthContext = createContext()
 
