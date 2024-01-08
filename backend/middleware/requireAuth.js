@@ -9,7 +9,7 @@ const requireAuth = async (req, res, next)=>{
     return res.status(401).json({error: 'Authorization token required'})
 
   }
-  // jad lkajdl;kfj;a.adpfja;ldkfj.sdjhfshdkfjshdf23
+  // bearer lkajdl;kfj;a.adpfja;ldkfj.sdjhfshdkfjshdf23
   const token = authorization.split(' ')[1] // 1 since the token is on positoin 1
 
   try{
